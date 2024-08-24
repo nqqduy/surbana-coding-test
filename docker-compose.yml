@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:14.1-alpine
+    container_name: location-database
+    restart: always
+    environment:
+      POSTGRES_USER: surbana
+      POSTGRES_PASSWORD: abcd1xyz2345#$!@
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - '5432:5432'
+volumes:
+  postgres:
