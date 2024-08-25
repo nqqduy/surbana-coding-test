@@ -37,4 +37,34 @@ export class LocationTreeRepositoryImpl extends LocationTreeRepositoryAbstract {
       throw error;
     }
   }
+
+  async moveTree(locationId: number, newAncestorId: number): Promise<void> {
+    try {
+      Logger.log(
+        `Move location ${locationId} to ${newAncestorId} node`,
+        'LocationTreeRepository',
+      );
+
+      await this.locationTreeRepository.query(`
+        DELETE FROM ${DATABASE_NAME.LOCATION_TREE}
+        WHERE ancestor_id IN (SELECT ancestor_id FROM ${DATABASE_NAME.LOCATION_TREE} WHERE ancestor_id != descendant_id AND descendant_id = ${locationId})
+        AND 
+        descendant_id IN (SELECT descendant_id FROM ${DATABASE_NAME.LOCATION_TREE} WHERE ancestor_id = ${locationId})
+      `);
+
+      await this.locationTreeRepository.query(`
+        INSERT INTO ${DATABASE_NAME.LOCATION_TREE} (ancestor_id, descendant_id)
+        SELECT superTree.ancestor_id, subtree.descendant_id FROM ${DATABASE_NAME.LOCATION_TREE} AS superTree
+            CROSS JOIN ${DATABASE_NAME.LOCATION_TREE} AS subtree
+        WHERE superTree.descendant_id = ${newAncestorId} AND subtree.ancestor_id = ${locationId};
+      `);
+    } catch (error) {
+      Logger.error(
+        `Failed Move location ${locationId} to ${newAncestorId} node`,
+        error.stack,
+        'LocationTreeRepository',
+      );
+      throw error;
+    }
+  }
 }

@@ -47,9 +47,19 @@ export class LocationRepositoryImpl extends LocationRepositoryAbstract {
 
   async update(locationId: number, data: LocationEntity): Promise<void> {
     try {
-    } catch (error) {}
-    console.log(locationId, data);
-    await this.locationRepository.update({ id: locationId }, data);
+      Logger.log(
+        `Update location with locationId: ${locationId} and data: ${JSON.stringify(data)}`,
+        'LocationRepository',
+      );
+      await this.locationRepository.update({ id: locationId }, data);
+    } catch (error) {
+      Logger.error(
+        `Failed to update location with locationId: ${locationId} and data: ${JSON.stringify(data)}`,
+        error.stack,
+        'LocationRepository',
+      );
+      throw error;
+    }
   }
 
   async findOneByCode(code: string): Promise<LocationEntity> {

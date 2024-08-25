@@ -7,6 +7,7 @@ import {
 import { ErrorException } from 'src/config/exception';
 import { BUILDING_ERROR_CODE, LOCATION_ERROR_CODE } from '../enum';
 import { LocationEntity } from '../../database/entities';
+import { Transactional } from 'typeorm-transactional';
 
 interface IInput {
   locationId: number;
@@ -25,6 +26,7 @@ export class UpdateLocationUseCase {
     private readonly locationTreeRepositoryAbstract: LocationTreeRepositoryAbstract,
   ) {}
 
+  @Transactional()
   async execute(data: IInput) {
     Logger.log(
       'Update location use case execute: ' + JSON.stringify(data),
@@ -52,6 +54,14 @@ export class UpdateLocationUseCase {
     }
 
     await this.updateLocation(data);
+
+    if (data.ancestorId) {
+      await this.checkExistAncestorLocation(data.ancestorId);
+      await this.locationTreeRepositoryAbstract.moveTree(
+        data.locationId,
+        data.ancestorId,
+      );
+    }
   }
 
   async updateLocation(data: IInput) {
