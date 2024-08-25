@@ -4,11 +4,35 @@ import {
   DeleteLocationUseCase,
   UpdateLocationUseCase,
 } from './domain/use-case';
-import { LocationRepositoryAbstract } from './database/repositories/abstracts';
-import { LocationRepositoryImpl } from './database/repositories/implements';
+import {
+  BuildingRepositoryAbstract,
+  LocationRepositoryAbstract,
+  LocationTreeRepositoryAbstract,
+} from './database/repositories/abstracts';
+import {
+  BuildingRepositoryImpl,
+  LocationRepositoryImpl,
+  LocationTreeRepositoryImpl,
+} from './database/repositories/implements';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import {
+  BuildingEntity,
+  LocationEntity,
+  LocationTreeEntity,
+} from './database/entities';
+import { CommonModule } from '../common/common-module';
+import { LocationController } from './api/http/controllers';
 
 @Module({
-  controllers: [],
+  imports: [
+    CommonModule,
+    TypeOrmModule.forFeature([
+      BuildingEntity,
+      LocationEntity,
+      LocationTreeEntity,
+    ]),
+  ],
+  controllers: [LocationController],
   providers: [
     // USE CASE
     CreateLocationUseCase,
@@ -19,6 +43,14 @@ import { LocationRepositoryImpl } from './database/repositories/implements';
     {
       provide: LocationRepositoryAbstract,
       useClass: LocationRepositoryImpl,
+    },
+    {
+      provide: BuildingRepositoryAbstract,
+      useClass: BuildingRepositoryImpl,
+    },
+    {
+      provide: LocationTreeRepositoryAbstract,
+      useClass: LocationTreeRepositoryImpl,
     },
   ],
 })

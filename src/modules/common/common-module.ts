@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseModule } from './database/database-module';
 import { DatabaseService } from './database/services';
 import config from 'src/config';
+import { DataSourceOptions } from 'typeorm';
 
 @Module({
   controllers: [],
@@ -18,6 +19,9 @@ import config from 'src/config';
       inject: [DatabaseService],
       useFactory: (databaseService: DatabaseService) =>
         databaseService.createOptions(),
+      async dataSourceFactory(options?: DataSourceOptions) {
+        return DatabaseService.addTransaction(options);
+      },
     }),
   ],
   exports: [],

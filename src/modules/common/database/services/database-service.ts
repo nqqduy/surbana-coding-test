@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
+import { addTransactionalDataSource } from 'typeorm-transactional';
 
 @Injectable()
 export class DatabaseService {
@@ -18,5 +20,13 @@ export class DatabaseService {
       synchronize: false,
       logging: true,
     };
+  }
+
+  static addTransaction(options: DataSourceOptions) {
+    if (!options) {
+      throw new Error('Invalid options passed');
+    }
+
+    return addTransactionalDataSource(new DataSource(options));
   }
 }

@@ -20,10 +20,11 @@ import {
   DeleteLocationUseCase,
   UpdateLocationUseCase,
 } from 'src/modules/locations/domain/use-case';
+import { SuccessResponse } from 'src/common/responses/success.response';
 
 @ApiTags('Locations')
 @Controller(ENDPOINT.LOCATION_V1)
-export class ArtworkController {
+export class LocationController {
   constructor(
     private readonly createLocationUseCase: CreateLocationUseCase,
     private readonly updateLocationUseCase: UpdateLocationUseCase,
@@ -33,7 +34,8 @@ export class ArtworkController {
   @Post('')
   @ApiSuccessResponseWithDataIsNull({ status: 201 })
   async createLocation(@Body() createLocationDto: CreateLocationDto) {
-    this.createLocationUseCase.execute({});
+    await this.createLocationUseCase.execute({ ...createLocationDto });
+    return SuccessResponse.call(null);
   }
 
   @Patch(':locationId(\\d+)')
@@ -41,7 +43,7 @@ export class ArtworkController {
     @Param('locationId') locationId: string,
     @Body() updateLocationDto: UpdateLocationDto,
   ) {
-    this.updateLocationUseCase.execute({});
+    // this.updateLocationUseCase.execute({});
   }
 
   @Delete(':locationId(\\d+)')

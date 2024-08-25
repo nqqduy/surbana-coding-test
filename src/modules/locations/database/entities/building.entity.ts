@@ -1,15 +1,12 @@
 import { BaseTimestampEntity } from 'src/common/database';
-import { Column, PrimaryColumn } from 'typeorm';
-import { BuildingModel } from '../../domain/models';
+import { DATABASE_NAME } from 'src/common/database/database-name';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export class BuildingEntity extends BaseTimestampEntity<BuildingModel> {
-  @PrimaryColumn({ name: 'id' })
+@Entity(DATABASE_NAME.BUILDING)
+export class BuildingEntity extends BaseTimestampEntity {
+  @PrimaryGeneratedColumn({ name: 'id' })
   id: number;
 
   @Column({ name: 'name' })
   name: string;
-
-  public toModel(): BuildingModel {
-    return BuildingModel.toModel(this);
-  }
 }

@@ -12,6 +12,6 @@ export class UpdateLocationUseCase {
   ) {}
 
   async execute(data: IInput) {
-    this.locationRepositoryAbstract.update();
+    // this.locationRepositoryAbstract.update();
   }
 }

@@ -11,4 +11,4 @@ export const DATABASE_HOST = process.env.DATABASE_HOST ?? 'localhost';
 export const DATABASE_PORT = Number(process.env.DATABASE_PORT) ?? 5432;
 export const DATABASE_USERNAME = process.env.DATABASE_USERNAME ?? 'surbana';
 export const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD ?? 'password';
-export const DATABASE_SCHEMA = process.env.DATABASE_SCHEMA ?? 'surbana';
+export const DATABASE_DB_NAME = process.env.DATABASE_DB_NAME ?? 'surbana';

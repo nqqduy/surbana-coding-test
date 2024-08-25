@@ -1,18 +1,21 @@
 import { BaseTimestampEntity } from 'src/common/database';
-import { Column, PrimaryColumn } from 'typeorm';
-import { BuildingModel, LocationModel } from '../../domain/models';
+import { DATABASE_NAME } from 'src/common/database/database-name';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export class LocationEntity extends BaseTimestampEntity<LocationModel> {
-  @PrimaryColumn({ name: 'id' })
+@Entity(DATABASE_NAME.LOCATION)
+export class LocationEntity extends BaseTimestampEntity {
+  @PrimaryGeneratedColumn({ name: 'id' })
   id: number;
 
   @Column({ name: 'name' })
   name: string;
 
-  @Column({ name: 'number' })
-  number: string;
+  @Column({ name: 'code' })
+  code: string;
 
-  public toModel(): LocationModel {
-    return LocationModel.toModel(this);
-  }
+  @Column({ name: 'area' })
+  area: number;
+
+  @Column({ name: 'building_id' })
+  buildingId: number;
 }

@@ -1,7 +1,9 @@
-import { LocationModel } from 'src/modules/locations/domain/models';
+import { LocationEntity } from '../../entities';
 
 export abstract class LocationRepositoryAbstract {
-  abstract create(data: LocationModel): Promise<void>;
-  abstract update(locationId: number, data: LocationModel): Promise<void>;
+  abstract create(data: LocationEntity): Promise<LocationEntity>;
+  abstract update(locationId: number, data: LocationEntity): Promise<void>;
   abstract delete(locationId: number): Promise<void>;
+  abstract findOneByCode(locationCode: string): Promise<LocationEntity>;
+  abstract findOneById(locationId: number): Promise<LocationEntity>;
 }

@@ -2,16 +2,17 @@ version: '3.8'
 
 services:
   database:
-    image: postgres:14.1-alpine
-    container_name: location-database
+    image: postgres
+    container_name: surbana-database
     restart: always
     environment:
-      POSTGRES_USER: surbana
-      POSTGRES_PASSWORD: abcd1xyz2345#$!@
-      PGDATA: /data/postgres
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_DB_NAME}
     volumes:
       - postgres:/data/postgres
     ports:
-      - '5432:5432'
+      - ${DATABASE_PORT}:5432
+
 volumes:
   postgres:
