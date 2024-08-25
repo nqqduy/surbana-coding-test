@@ -9,6 +9,14 @@ requires frontend) to allow users can create/update/delete locations.
 
 Database design: have to support the address location tree (PostgreSQL require).
 
+## Document for project
+
+Link:
+
+## API Document
+
+Run the project successfully by following the instructions below and open `http://${host}:${port}/api/docs/`
+
 ## Installation
 
 1. Clone the Repo:
@@ -31,7 +39,7 @@ npm i
 
 4. Install and set up database
 
-If you haven't installed Docker, please install Docker from the following [here](https://docs.docker.com/engine/install/) \
+If you haven't installed Docker, please install Docker from the following [here](https://docs.docker.com/engine/install/)
 
 Set up database with Docker
 
