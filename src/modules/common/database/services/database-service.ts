@@ -18,7 +18,7 @@ export class DatabaseService {
       database: this.configService.get<string>('database.database'),
       entities: ['dist/modules/**/entities/*.js'],
       synchronize: false,
-      logging: true,
+      //   logging: true,
     };
   }
 

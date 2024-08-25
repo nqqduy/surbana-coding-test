@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   BuildingRepositoryAbstract,
   LocationRepositoryAbstract,
@@ -27,6 +27,11 @@ export class CreateLocationUseCase {
 
   @Transactional()
   async execute(data: IInput) {
+    Logger.log(
+      'Create location use case execute: ' + JSON.stringify(data),
+      'CreateLocationUseCase',
+    );
+
     await this.checkExistBuilding(data.buildingId);
     await this.checkUniqueLocationCode(data.number);
     if (data.ancestorId) {
@@ -67,6 +72,10 @@ export class CreateLocationUseCase {
     const locationEntity =
       await this.locationRepositoryAbstract.findOneByCode(locationCode);
     if (locationEntity) {
+      Logger.error(
+        `Failed to checkUniqueLocationCode : ${locationCode}`,
+        'CreateLocationUseCase',
+      );
       throw new ErrorException(
         LOCATION_ERROR_CODE.LOCATION_ALREADY_EXIST,
         'Location already exist',
@@ -78,6 +87,10 @@ export class CreateLocationUseCase {
     const locationEntity =
       await this.locationRepositoryAbstract.findOneById(locationId);
     if (!locationEntity) {
+      Logger.error(
+        `Failed to checkExistAncestorLocation : ${locationId}`,
+        'CreateLocationUseCase',
+      );
       throw new ErrorException(
         LOCATION_ERROR_CODE.ANCESTOR_LOCATION_NOT_FOUND,
         'Ancestor location not found',
@@ -89,6 +102,10 @@ export class CreateLocationUseCase {
     const buildingEntity =
       await this.buildingRepositoryAbstract.findOneById(buildingId);
     if (!buildingEntity) {
+      Logger.error(
+        `Failed to checkExistBuilding : ${buildingId}`,
+        'CreateLocationUseCase',
+      );
       throw new ErrorException(
         BUILDING_ERROR_CODE.BUILDING_NOT_FOUND,
         'Building not found',

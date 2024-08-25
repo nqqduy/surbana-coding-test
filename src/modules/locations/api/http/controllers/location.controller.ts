@@ -39,16 +39,21 @@ export class LocationController {
   }
 
   @Patch(':locationId(\\d+)')
+  @ApiSuccessResponseWithDataIsNull({ status: 200 })
   async updateLocation(
     @Param('locationId') locationId: string,
     @Body() updateLocationDto: UpdateLocationDto,
   ) {
-    // this.updateLocationUseCase.execute({});
+    await this.updateLocationUseCase.execute({
+      locationId: Number(locationId),
+      ...updateLocationDto,
+    });
+    return SuccessResponse.call(null);
   }
 
   @Delete(':locationId(\\d+)')
   @HttpCode(204)
   async deleteLocation(@Param('locationId') locationId: string) {
-    this.deleteLocationUseCase.execute(+locationId);
+    await this.deleteLocationUseCase.execute(+locationId);
   }
 }

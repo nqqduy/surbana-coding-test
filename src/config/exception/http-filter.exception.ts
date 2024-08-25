@@ -3,6 +3,7 @@ import {
   BadRequestException,
   Catch,
   ExceptionFilter,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -51,7 +52,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       );
     }
 
-    console.log(`Error: ${exception}`);
+    Logger.error(`Error: ${exception}`);
 
     response
       .status(errorException.httpStatusCode)
